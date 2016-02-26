@@ -7,7 +7,7 @@ app.listen(PORT, () => {
 });
 
 var HOME = 'Timestamp microservice for FreeCodeCamp';
-var INVALID = JSON.stringify({ unix: null, natural: null });
+var INVALID = { unix: null, natural: null };
 
 app.get('/', (req, res) => {
   res.send(HOME);
@@ -25,8 +25,8 @@ app.get('/:data', (req, res) => {
   if (parseInt(d)) d = parseInt(d);
   var date = new Date(typeof d == 'string' ? d : d*1000);
   if (date.toString() == 'Invalid Date') {
-    res.send(INVALID);
+    res.json(INVALID);
     return;
   }
-  res.send(JSON.stringify({ unix: (date.getTime()/1000-date.getTimezoneOffset()*60), natural: monthNames[date.getUTCMonth()] + ' '+date.getUTCDate() + ', '+date.getUTCFullYear() }));
+  res.json({ unix: (date.getTime()/1000-date.getTimezoneOffset()*60), natural: monthNames[date.getUTCMonth()] + ' '+date.getUTCDate() + ', '+date.getUTCFullYear() });
 });
